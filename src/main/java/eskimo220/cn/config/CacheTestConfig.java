@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jndi.JndiObjectFactoryBean;
 
+import javax.naming.NamingException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +23,19 @@ import java.util.Map;
 @EnableCaching
 public class CacheTestConfig {
 
-    @Autowired
-    private ApplicationContextFacade servletContext;
+//    @Autowired
+//    private ApplicationContextFacade servletContext;
 
     @Bean(destroyMethod = "shutdown")
+    public RedissonClient jndiRedissonClient() throws IllegalArgumentException, NamingException {
+        JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
+        bean.setJndiName("java:comp/env/bean/redisson");
+        bean.afterPropertiesSet();
+        return (RedissonClient) bean.getObject();
+    }
+
+
+/*    @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient() throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
 
         System.out.println("----------------");
@@ -58,7 +69,7 @@ public class CacheTestConfig {
         }
 
         return null;
-    }
+    }*/
 
     @Bean
     public RedissonSpringCacheManager cacheManager(RedissonClient redissonClient) {
