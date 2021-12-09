@@ -8,9 +8,9 @@ import java.util.UUID;
 @Service
 public class CacheTestService {
 
-
     @Cacheable(sync = true, value = "getCacheString-key")
-    public String getCacheString() {
+    public String getCacheString(String key) {
+        System.out.println("key = " + key);
         return UUID.randomUUID().toString();
     }
 }
