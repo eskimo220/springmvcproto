@@ -2,8 +2,10 @@ package eskimo220.cn.controller;
 
 import com.google.common.collect.Sets;
 import eskimo220.cn.service.CacheTestService;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.SimpleKey;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
@@ -32,7 +34,7 @@ public class HomeController {
     }
 
     @Autowired
-    private RedissonClient redissonClient;
+    private CacheManager cacheManager;
 
     @Autowired
     private CacheTestService cacheTestService;
@@ -56,7 +58,9 @@ public class HomeController {
     @RequestMapping(value = "/get-all")
     public String test2(Model model) {
 
-        Object o = redissonClient.getMap("getCacheString-key").getAll(Sets.newHashSet("test1", "test3", "test5"));
+        RMap rmap = (RMap) cacheManager.getCache("getCacheString-key").getNativeCache();
+
+        Object o = rmap.getAll(Sets.newHashSet("test1", "test3", "test5"));
 
         model.addAttribute("getCacheString", o);
 
