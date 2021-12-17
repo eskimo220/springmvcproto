@@ -1,19 +1,15 @@
 package eskimo220.cn.config;
 
-import org.apache.catalina.Manager;
-import org.apache.catalina.core.ApplicationContext;
-import org.apache.catalina.core.ApplicationContextFacade;
-import org.apache.catalina.core.StandardContext;
+import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
-import org.redisson.tomcat.RedissonSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,43 +17,14 @@ import java.util.Map;
 @EnableCaching
 public class CacheTestConfig {
 
-    @Autowired
-    private ApplicationContextFacade servletContext;
+    @Bean
+    public RedissonClient redisson() {
 
-    @Bean(destroyMethod = "shutdown")
-    public RedissonClient redissonClient() throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        Config config = new Config();
+        SingleServerConfig serverConfig = config.useSingleServer()
+                .setAddress(System.getenv("REDIS_URL"));
 
-        System.out.println("----------------");
-
-        Field applicationContextField = servletContext.getClass().getDeclaredField("context");
-        applicationContextField.setAccessible(true);
-        ApplicationContext appContextObj = (ApplicationContext) applicationContextField.get(servletContext);
-        Field standardContextField = appContextObj.getClass().getDeclaredField("context");
-        standardContextField.setAccessible(true);
-        StandardContext standardContextObj = (StandardContext) standardContextField.get(appContextObj);
-        Manager persistenceManager = standardContextObj.getManager();
-
-        System.out.println(persistenceManager);
-
-        if (persistenceManager instanceof RedissonSessionManager) {
-            RedissonClient redissonClient = ((RedissonSessionManager) persistenceManager).getRedisson();
-
-            redissonClient.getAtomicLong("nums-xxxx-in").incrementAndGet();
-
-            System.out.println(redissonClient);
-
-
-//            System.out.println("Thread.currentThread().getContextClassLoader() = " + Thread.currentThread().getContextClassLoader());
-//            System.out.println("this.getClass().getClassLoader() = " + this.getClass().getClassLoader());
-//            this.getClass().getClassLoader();
-//            Thread.currentThread().getContextClassLoader()
-//            Class.forName("org.springframework.cache.CacheManager");
-//            Class.forName("org.redisson.spring.cache.RedissonSpringCacheManager");
-
-            return redissonClient;
-        }
-
-        return null;
+        return Redisson.create(config);
     }
 
     @Bean

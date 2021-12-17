@@ -76,18 +76,30 @@
             <version>${jsp.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.heroku</groupId>
-            <artifactId>webapp-runner</artifactId>
-            <version>${webapp-runner.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.heroku</groupId>-->
+            <!--<artifactId>webapp-runner</artifactId>-->
+            <!--<version>${webapp-runner.version}</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.0.1-jre</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>8.0.48</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
