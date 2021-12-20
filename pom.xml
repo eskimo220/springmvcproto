@@ -97,7 +97,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-catalina</artifactId>
-            <version>8.0.48</version>
+            <version>8.5.32</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

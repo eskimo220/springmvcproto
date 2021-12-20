@@ -36,4 +36,14 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+
+	<servlet>
+		<servlet-name>jsp</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+		<init-param>
+			<param-name>development</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</servlet>
+
 </web-app>
