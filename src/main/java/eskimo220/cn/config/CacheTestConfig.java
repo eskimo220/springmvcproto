@@ -1,21 +1,14 @@
 package eskimo220.cn.config;
 
-import org.apache.catalina.Manager;
-import org.apache.catalina.core.ApplicationContext;
-import org.apache.catalina.core.ApplicationContextFacade;
-import org.apache.catalina.core.StandardContext;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
-import org.redisson.tomcat.RedissonSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
 import javax.naming.NamingException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +19,7 @@ public class CacheTestConfig {
 //    @Autowired
 //    private ApplicationContextFacade servletContext;
 
-    @Bean(destroyMethod = "shutdown")
+    @Bean(destroyMethod = "")
     public RedissonClient jndiRedissonClient() throws IllegalArgumentException, NamingException {
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
         bean.setJndiName("java:comp/env/bean/redisson");
